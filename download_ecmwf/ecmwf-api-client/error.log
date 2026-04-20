@@ -1,0 +1,6 @@
+2025-02-14 13:36:38.783950 - Lỗi tải param 121 cho ngày 2022-01-03: 'ecmwf.API error 1: ERROR 89 (MARS_EXPECTED_FIELDS): Expected 37000, got 36800'
+2025-02-14 13:42:19.867094 - Lỗi tải param 121 cho ngày 2022-01-06: 'ecmwf.API error 1: ERROR 89 (MARS_EXPECTED_FIELDS): Expected 37000, got 36800'
+2025-02-14 13:47:27.036107 - Lỗi tải param 121 cho ngày 2022-01-10: 'ecmwf.API error 1: ERROR 89 (MARS_EXPECTED_FIELDS): Expected 37000, got 36800'
+2025-02-14 13:57:50.045469 - Lỗi tải param 121 cho ngày 2022-01-03: 'ecmwf.API error 1: ERROR 89 (MARS_EXPECTED_FIELDS): Expected 37000, got 36800'
+2025-02-14 13:58:04.451709 - Lỗi tải param 121, number 1, hdate 2002-01-03 cho ngày 2022-01-03: 'ecmwf.API error 1: ERROR 89 (MARS_EXPECTED_FIELDS): Expected 185, got 184'
+2025-03-24 15:53:22.178438 - Lỗi tải param 122 cho ngày 2024-09-09: 'ecmwf.API error 1: Connection closed by server.'
