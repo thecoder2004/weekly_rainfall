@@ -5,8 +5,8 @@ It integrates data preprocessing pipelines with deep learning models including *
 
 
 ## 📁 Project Structure
-```.
-
+```
+.
 ├── config/                 # Experiment configuration
 ├── download_ecmwf/         # ECMWF data downloading scripts
 ├── GsMap/                  # GSMap data processing pipeline
