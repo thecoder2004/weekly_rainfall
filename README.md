@@ -7,11 +7,19 @@ It integrates data preprocessing pipelines with deep learning models including *
 
 ## 📁 Project Structure
 .
+
 ├── config/                 # Experiment configuration
+
 ├── download_ecmwf/         # ECMWF data downloading scripts
+
 ├── GsMap/                  # GSMap data processing pipeline
+
 ├── src/
+
 │   ├── model/              # Model architectures (VIT)
+
 │   └── utils/              # Training, evaluation, and utilities
+
 ├── Final_Data_*.csv        # Processed dataset
+
 └── main.py                 # Entry point
