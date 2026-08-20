@@ -1,0 +1,40 @@
+Total parameters: 7750849
+Processing ecmwf_data for train: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 74240/74240 [00:00<00:00, 413751.35it/s]
+Processing ecmwf_data for valid: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████| 9280/9280 [00:00<00:00, 415672.33it/s]
+Processing ecmwf_data for test: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 9280/9280 [00:00<00:00, 416789.54it/s]
+********** Starting testing process **********
+  1%|▉                                                                                                                                             | 2/290 [00:05<12:55,  2.69s/it]
+Traceback (most recent call last):
+  File "/mnt/disk3/tunm/weekly_rainfall/main.py", line 168, in <module>
+    main()
+  File "/mnt/disk3/tunm/weekly_rainfall/main.py", line 156, in main
+    test_func.test_func_quantile( test_dataset, loss_func, config, esp_scaler, output_scaler, device)
+  File "/mnt/disk3/tunm/weekly_rainfall/src/utils/test_func.py", line 271, in test_func_quantile
+    for data in tqdm(test_dataloader):
+  File "/mnt/disk1/miniconda3/envs/hantn1/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/mnt/disk1/miniconda3/envs/hantn1/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 708, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/mnt/disk1/miniconda3/envs/hantn1/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 764, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/disk1/miniconda3/envs/hantn1/lib/python3.11/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/disk1/miniconda3/envs/hantn1/lib/python3.11/site-packages/torch/utils/data/_utils/fetch.py", line 52, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/mnt/disk3/tunm/weekly_rainfall/src/utils/dataloader.py", line 151, in __getitem__
+    ground_truth =  self.get_ground_truth(year, month, day, lead_time)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/disk3/tunm/weekly_rainfall/src/utils/dataloader.py", line 92, in get_ground_truth
+    mask = (self.gauge_data['Day'] >= start) & (self.gauge_data['Day'] <= end)
+            ~~~~~~~~~~~~~~~^^^^^^^
+  File "/mnt/disk1/miniconda3/envs/hantn1/lib/python3.11/site-packages/pandas/core/frame.py", line 4075, in __getitem__
+    and key in self.columns
+        ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/disk1/miniconda3/envs/hantn1/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 5323, in __contains__
+    def __contains__(self, key: Any) -> bool:
+
+KeyboardInterrupt

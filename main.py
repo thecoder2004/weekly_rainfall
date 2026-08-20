@@ -5,15 +5,14 @@ import torch.nn as nn
 import wandb
 
 from torch.utils.data import DataLoader
-
+from src.model.baseline.unet import UNet
 from src.utils.get_option import get_option
-from src.model import models, model_2head
+from src.model import models
 from src.model.baseline import cnn_lstm, conv_lstm
 from src.utils import utils, get_scaler, train_func, test_func
 from src.utils.loss import *
 from src.utils.get_session_name import get_session_name
-from src.utils.dataloader import CustomDataset, CustomDataset2, CustomDataset3, CustomDataset3_2Head
-from src.model import unet
+from src.utils.dataloader import CustomDataset3
 def get_device():
     if torch.cuda.is_available():
         print("Device: GPU")
@@ -55,13 +54,12 @@ def get_loss_function(config):
 
 def get_model(config, device):
     name = config.MODEL.NAME.lower()
-    # return models.MAEViT4D(config).to(device)
     model_map = {
-        "strans-v3": models.SwinTransformer_Ver3, # Model with Spatial-Temporal Extractor
-        "strans-v4": models.SwinTransformer_Ver4, # Model without GsMAP
-        "strans-v5": models.SwinTransformer_Ver5, # Model without LT Embeding
-        "strans-v6": models.SwinTransformer_Ver6, # Model full
+        "vifos-conv3d": models.VIFOS_CONV3D,
+        "vifos-spatial-temporal-extractor": models.VIFOS_SPATIAL_TEMPORAL_EXTRACTOR,
         "cnn-lstm": cnn_lstm.CNN,
+        "unet": UNet,
+        "quantitle": UNet,
     }
     if name not in model_map:
         raise ValueError(f"Wrong model name: {config.MODEL.NAME}")
@@ -86,8 +84,6 @@ def init_wandb(config):
         )
 
 def main():
-
-    # Set up parameter and wandb
     args, config = get_option()
     
     config.WANDB.SESSION_NAME = get_session_name(config)
@@ -98,15 +94,13 @@ def main():
     
     loss_func = get_loss_function(config)
         
-    
-
-    # Initialize or import available scaler parameter
+    # Preprocess data
     print("*************** Get scaler ***************")
     input_scaler, esp_scaler, output_scaler = get_scaler.get_scaler(config)
     
     print("*************** Init dataset ***************")
     
-    # Create checkpoint
+
     checkpoint_dir = f"saved_checkpoints/{config.WANDB.GROUP_NAME}/checkpoint/"
     create_checkpoint_dir(checkpoint_dir)
 
@@ -121,6 +115,9 @@ def main():
     print("*************** Init model ***************")
     model = get_model(config, device)
 
+    
+    
+    
         
         
     ## Set optimizer
@@ -141,17 +138,20 @@ def main():
     init_wandb(config)
     total_params = sum(p.numel() for p in model.parameters())
     print(f"Total parameters: {total_params}")
-    # Load dataset and transform by scaler
+    
     train_dataset = CustomDataset3(mode='train', config=config, ecmwf_scaler=input_scaler, esp_scaler=esp_scaler, output_scaler= output_scaler, shuffle=True)
     valid_dataset = CustomDataset3(mode='valid', config=config, ecmwf_scaler=input_scaler, esp_scaler=esp_scaler, output_scaler= output_scaler)
     test_dataset = CustomDataset3(mode='test', config=config, ecmwf_scaler=input_scaler, esp_scaler=esp_scaler, output_scaler= output_scaler)
-    
-    # Training process
+    if config.MODEL.NAME.lower() == "quantitle":
+        test_func.test_func_quantile( test_dataset, loss_func, config, esp_scaler, output_scaler, device)
+        return
     results = train_func.train_func(model, train_dataset, valid_dataset, early_stopping, loss_func, optimizer, config, device)
+    
     print(f"Final Train Loss: {results['final_train_loss']:.4f}")
-    # Inference process
+    
     utils.load_model(model, f"saved_checkpoints/{config.WANDB.GROUP_NAME}/checkpoint/{config.WANDB.SESSION_NAME}.pt")
     test_func.test_func(model, test_dataset, loss_func, config, esp_scaler, output_scaler, device)
-   
+    
+
 if __name__ == "__main__":
     main()

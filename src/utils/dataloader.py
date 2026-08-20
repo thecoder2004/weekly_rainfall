@@ -8,7 +8,6 @@ import time
 from tqdm import tqdm
 
   
-
 class CustomDataset3(Dataset):
     def __init__(self, mode='train', ecmwf_scaler=None, esp_scaler=None,
                  output_scaler=None, config=None, shuffle=False):
@@ -49,10 +48,10 @@ class CustomDataset3(Dataset):
         return start
 
     def process_and_save_ecmwf_data(self):
-        os.makedirs(f'{self.processed_ecmwf_dir}seed{self.config.MODEL.SEED}_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}', exist_ok=True)
+        os.makedirs(f'{self.processed_ecmwf_dir}seed52_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}', exist_ok=True)
         for idx in tqdm(range(len(self.idx_df)), desc=f"Processing ecmwf_data for {self.mode}"):
-            p_ecmwf = f'{self.processed_ecmwf_dir}seed{self.config.MODEL.SEED}_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/ecmwf_data_{idx}.npy'
-            p_esp   = f'{self.processed_ecmwf_dir}seed{self.config.MODEL.SEED}_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/esp_data_{idx}.npy'
+            p_ecmwf = f'{self.processed_ecmwf_dir}seed52_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/ecmwf_data_{idx}.npy'
+            p_esp   = f'{self.processed_ecmwf_dir}seed52_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/esp_data_{idx}.npy'
 
             if not os.path.exists(p_ecmwf):
                 ecmwf_path, esp_path, lead_time, year, month, day = self.idx_df[idx]
@@ -144,8 +143,8 @@ class CustomDataset3(Dataset):
 
     def __getitem__(self, idx):
         ecmwf_path, esp_path, lead_time, year, month, day = self.idx_df[idx]
-        p_ecmwf = f'{self.processed_ecmwf_dir}seed{self.config.MODEL.SEED}_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/ecmwf_data_{idx}.npy'
-        p_esp   = f'{self.processed_ecmwf_dir}seed{self.config.MODEL.SEED}_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/esp_data_{idx}.npy'
+        p_ecmwf = f'{self.processed_ecmwf_dir}seed52_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/ecmwf_data_{idx}.npy'
+        p_esp   = f'{self.processed_ecmwf_dir}seed52_ecmwf_{self.config.MODEL.ECMWF_TIME_STEP}_esp_{self.config.MODEL.TIME_STEP}/esp_data_{idx}.npy'
 
         ecmwf_data = np.load(p_ecmwf)    # (time, feature, H, W)
         esp_data   = np.load(p_esp)      # (8, H, W)
